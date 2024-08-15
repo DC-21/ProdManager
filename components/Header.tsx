@@ -1,21 +1,39 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { RootDrawerParamList } from "../types/interface";
+import { useDrawerStatus } from "@react-navigation/drawer";
 
-type HeaderNavigationProp = DrawerNavigationProp<RootDrawerParamList>;
+type RootDrawerParamList = {
+  HomeStack: undefined;
+  Electronics: { category: string };
+  Clothing: { category: string };
+  "Home Appliances": { category: string };
+  Books: { category: string };
+  "Add Product": undefined;
+};
 
-const Header: React.FC = () => {
-  const navigation = useNavigation<HeaderNavigationProp>();
+type HeaderProps = {
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
+};
+
+const Header: React.FC<HeaderProps> = ({ navigation }) => {
+  const isDrawerOpen = useDrawerStatus() === "open";
+
+  const toggleDrawer = () => {
+    if (isDrawerOpen) {
+      navigation.closeDrawer();
+    } else {
+      navigation.openDrawer();
+    }
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.menuButtonContainer}
-        onPress={() => navigation.toggleDrawer()}
+        onPress={toggleDrawer}
       >
-        <Text style={styles.menuButton}>☰</Text>
+        <Text style={styles.menuButton}>{isDrawerOpen ? "X" : "☰"}</Text>
       </TouchableOpacity>
       <Text style={styles.title}>ProdManager</Text>
     </View>

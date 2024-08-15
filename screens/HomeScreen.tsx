@@ -7,42 +7,74 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert,
   Dimensions,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import Icon from "react-native-vector-icons/Ionicons";
 import {
   loadProductsFromLocalStorage,
   saveProductsToLocalStorage,
 } from "../utils/localstorage";
-import { Picker } from "@react-native-picker/picker";
 import { Product } from "../types/interface";
-import productsJson from "../assets/products.json"; // Import your products from the JSON file
+import productsJson from "../assets/products.json";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen: React.FC = ({ navigation }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        let savedProducts = await loadProductsFromLocalStorage();
+  // Fetch products from local storage or use default products
+  const fetchProducts = async () => {
+    try {
+      let savedProducts = await loadProductsFromLocalStorage();
 
-        if (savedProducts.length === 0) {
-          console.log(
-            "No products in local storage, adding default products..."
-          );
-          await saveProductsToLocalStorage(productsJson);
-          savedProducts = productsJson;
-        }
-
-        setProducts(savedProducts);
-      } catch (error) {
-        console.error("Failed to load products:", error);
+      if (savedProducts.length === 0) {
+        console.log("No products in local storage, adding default products...");
+        await saveProductsToLocalStorage(productsJson);
+        savedProducts = productsJson;
       }
-    };
 
-    fetchProducts();
-  }, []);
+      setProducts(savedProducts);
+    } catch (error) {
+      console.error("Failed to load products:", error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchProducts();
+    }, [])
+  );
+
+  const handleDeleteProduct = (productId: string) => {
+    Alert.alert(
+      "Delete Product",
+      "Are you sure you want to delete this product?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            const updatedProducts = products.filter(
+              (product) => product.id !== productId
+            );
+            setProducts(updatedProducts);
+            await saveProductsToLocalStorage(updatedProducts);
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
+
+  const handleUpdateProduct = (productId: string) => {
+    navigation.navigate("UpdateProduct", { productId });
+  };
 
   const filteredProducts = products.filter(
     (product) =>
@@ -51,18 +83,33 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
   );
 
   const renderItem = ({ item }: { item: Product }) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() =>
-        navigation.navigate("ProductDetail", { productId: item.id })
-      }
-    >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.itemInfo}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>{item.price}</Text>
+    <View style={styles.item}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("ProductDetail", { productId: item.id })
+        }
+      >
+        <Image source={{ uri: item.image }} style={styles.image} />
+        <View style={styles.itemInfo}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.price}>K{item.price}</Text>
+        </View>
+      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => handleUpdateProduct(item.id)}
+        >
+          <Icon name="create-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => handleDeleteProduct(item.id)}
+        >
+          <Icon name="trash-outline" size={24} color="red" />
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -90,7 +137,6 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         keyExtractor={(item) => item.id}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        key={selectedCategory}
       />
     </View>
   );
@@ -115,20 +161,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   row: {
-    justifyContent: "space-between", // Space items evenly in the row
+    justifyContent: "space-between",
   },
   item: {
     flex: 1,
+    maxWidth: "48%",
     padding: 8,
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 8,
-    marginBottom: 16, // Space between rows
-    marginHorizontal: 8, // Space between columns
+    marginBottom: 16,
+    marginHorizontal: 8,
     alignItems: "center",
   },
   image: {
-    width: Dimensions.get("window").width / 2 - 48, // Adjusted to account for margin
+    width: Dimensions.get("window").width / 2 - 48,
     height: 100,
     borderRadius: 8,
   },
@@ -145,6 +192,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "gray",
     marginTop: 4,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 10,
+  },
+  iconButton: {
+    padding: 8,
   },
 });
 

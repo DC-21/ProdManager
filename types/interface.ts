@@ -14,3 +14,9 @@ export interface Product {
   price: string;
   category: string;
 }
+
+export type RootStackParamList = {
+  Home: undefined;
+  ProductDetail: { productId: string };
+  UpdateProduct: { productId: string };
+};
