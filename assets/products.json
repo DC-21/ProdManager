@@ -1,0 +1,19 @@
+[
+    {
+      "id": "1",
+      "title": "Smartphone",
+      "description": "A high-end smartphone",
+      "image": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/c20afd60-b230-4815-bfd2-6768c875f6cd/air-force-1-07-shoes-tP2wSt.png",
+      "price": "K699.00",
+      "category": "Electronics"
+    },
+    {
+      "id": "2",
+      "title": "T-Shirt",
+      "description": "A stylish t-shirt",
+      "image": "https://www.tradeprint.co.uk/dam/jcr:cfdb2af1-7b39-483a-8fce-f665c63b5222/Heavy%20Cotton%20T-Shirt%20Black.webp",
+      "price": "K19.99",
+      "category": "Clothing"
+    }
+  ]
+  
