@@ -8,39 +8,51 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import {Product} from "../types/interface"
 import { loadProductsFromLocalStorage } from "../utils/localstorage";
 
-const ProductDetailScreen: React.FC<any> = ({ route }) => {
+
+interface Product {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  price: number;
+  image: string;
+}
+
+const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const { productId } = route.params;
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchProductFromLocalStorage = async () => {
-      try {
-        const savedProducts = await loadProductsFromLocalStorage();
-        const foundProduct = savedProducts.find((p: any) => p.id === productId);
+  // Define the fetchProductFromLocalStorage function outside of useEffect
+  const fetchProductFromLocalStorage = async () => {
+    try {
+      const savedProducts = await loadProductsFromLocalStorage();
+      const foundProduct = savedProducts.find((p: Product) => p.id === productId);
 
-        if (foundProduct) {
-          setProduct(foundProduct);
-        } else {
-          setError("Product not found.");
-        }
-      } catch (error) {
-        console.error("Failed to load product:", error);
-        setError("Failed to load product details.");
-      } finally {
-        setIsLoading(false);
+      if (foundProduct) {
+        setProduct(foundProduct);
+      } else {
+        setError("Product not found.");
       }
-    };
+    } catch (error) {
+      console.error("Failed to load product:", error);
+      setError("Failed to load product details.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProductFromLocalStorage();
   }, [productId]);
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -55,18 +67,21 @@ const ProductDetailScreen: React.FC<any> = ({ route }) => {
   }
 
   if (!product) {
-    return (
-      <View style={styles.container}>
-        <Text>No product found.</Text>
-      </View>
-    );
+    Alert.alert("Error", "Product not found.", [
+      { text: "OK", onPress: () => navigation.goBack() },
+    ]);
+    return null;
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{product.title}</Text>
       <View style={styles.detailsContainer}>
-        <Image source={{ uri: product.image }} style={styles.image} />
+        <Image
+          source={{ uri: product.image }}
+          style={styles.image}
+          accessibilityLabel={product.title} // Added accessibilityLabel
+        />
         <View style={styles.infoContainer}>
           <Text style={styles.category}>{product.category}</Text>
           <Text style={styles.description}>{product.description}</Text>
@@ -81,6 +96,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center", // Centering the loading indicator
   },
   title: {
     fontSize: 24,

@@ -20,3 +20,5 @@ export type RootStackParamList = {
   ProductDetail: { productId: string };
   UpdateProduct: { productId: string };
 };
+
+
