@@ -20,7 +20,7 @@ const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Define the fetchProductFromLocalStorage function outside of useEffect
+ 
   const fetchProductFromLocalStorage = async () => {
     try {
       const savedProducts = await loadProductsFromLocalStorage();
@@ -73,7 +73,7 @@ const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
         <Image
           source={{ uri: product.image }}
           style={styles.image}
-          accessibilityLabel={product.title} // Added accessibilityLabel
+          accessibilityLabel={product.title}
         />
         <View style={styles.infoContainer}>
           <Text style={styles.category}>{product.category}</Text>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center", // Centering the loading indicator
+    alignItems: "center", 
   },
   title: {
     fontSize: 24,
