@@ -12,14 +12,7 @@ import {Product} from "../types/interface"
 import { loadProductsFromLocalStorage } from "../utils/localstorage";
 
 
-interface Product {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  price: number;
-  image: string;
-}
+
 
 const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const { productId } = route.params;
