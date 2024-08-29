@@ -8,11 +8,8 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import {Product} from "../types/interface"
+import { Product } from "../types/interface";
 import { loadProductsFromLocalStorage } from "../utils/localstorage";
-
-
-
 
 const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const { productId } = route.params;
@@ -20,11 +17,12 @@ const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
- 
   const fetchProductFromLocalStorage = async () => {
     try {
       const savedProducts = await loadProductsFromLocalStorage();
-      const foundProduct = savedProducts.find((p: Product) => p.id === productId);
+      const foundProduct = savedProducts.find(
+        (p: Product) => p.id === productId
+      );
 
       if (foundProduct) {
         setProduct(foundProduct);
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center", 
+    alignItems: "center",
   },
   title: {
     fontSize: 24,

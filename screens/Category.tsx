@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { loadProductsFromLocalStorage } from "../utils/localstorage";
 import { Product } from "../types/interface";
@@ -13,6 +14,8 @@ import { Product } from "../types/interface";
 const CategoryScreen: React.FC = ({ route, navigation }: any) => {
   const { category } = route.params;
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,6 +28,9 @@ const CategoryScreen: React.FC = ({ route, navigation }: any) => {
         );
       } catch (error) {
         console.error("Failed to load products:", error);
+        setError("Failed to load products. Please try again later.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,6 +51,32 @@ const CategoryScreen: React.FC = ({ route, navigation }: any) => {
       </View>
     </TouchableOpacity>
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <View style={styles.noProductsContainer}>
+        <Text style={styles.noProductsText}>
+          No products found in the {category} category.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -102,6 +134,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "gray",
     marginTop: 4,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    fontSize: 18,
+    color: "red",
+    textAlign: "center",
+  },
+  noProductsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noProductsText: {
+    fontSize: 18,
+    color: "gray",
+    textAlign: "center",
   },
 });
 
