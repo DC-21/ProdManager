@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -22,8 +22,23 @@ const AddProductScreen: React.FC = ({ navigation }: any) => {
   const [image, setImage] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [invalidInputs, setInvalidInputs] = useState({
+    title: false,
+    price: false,
+    description: false,
+    image: false,
+    category: false,
+  });
 
-  const handleAddProduct = async () => {
+  const handleAddProduct = useCallback(async () => {
+    setInvalidInputs({
+      title: !title,
+      price: !price,
+      description: !description,
+      image: !image,
+      category: !category,
+    });
+
     if (!title || !price || !description || !image || !category) {
       Alert.alert("Error", "Please fill in all fields and select a category.");
       return;
@@ -49,40 +64,39 @@ const AddProductScreen: React.FC = ({ navigation }: any) => {
 
       Alert.alert("Success", "Product added successfully!");
 
-      // Navigate back to HomeScreen with updated products
       navigation.navigate("Home", { updatedProducts });
     } catch (error) {
       console.error("Failed to add product:", error);
       setIsLoading(false);
       Alert.alert("Error", "Failed to add product.");
     }
-  };
+  }, [title, price, description, image, category, navigation]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Add New Product</Text>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, invalidInputs.title && styles.invalidInput]}
         placeholder="Product Title"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, invalidInputs.price && styles.invalidInput]}
         placeholder="Product Price"
         value={price}
         onChangeText={setPrice}
         keyboardType="numeric"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, invalidInputs.image && styles.invalidInput]}
         placeholder="Product Image URL"
         value={image}
         onChangeText={setImage}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, invalidInputs.description && styles.invalidInput]}
         placeholder="Product Description"
         value={description}
         onChangeText={setDescription}
@@ -90,7 +104,7 @@ const AddProductScreen: React.FC = ({ navigation }: any) => {
 
       <Picker
         selectedValue={category}
-        style={styles.picker}
+        style={[styles.picker, invalidInputs.category && styles.invalidInput]}
         onValueChange={(itemValue: string) => setCategory(itemValue)}
       >
         <Picker.Item label="Choose Category" value="" />
@@ -131,6 +145,9 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     marginBottom: 16,
+  },
+  invalidInput: {
+    borderColor: "red",
   },
 });
 
