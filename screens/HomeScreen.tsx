@@ -131,13 +131,17 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         <Picker.Item label="Home Appliances" value="Home Appliances" />
         <Picker.Item label="Books" value="Books" />
       </Picker>
-      <FlatList
-        data={filteredProducts}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-      />
+      {filteredProducts.length > 0 ? (
+        <FlatList
+          data={filteredProducts}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+        />
+      ) : (
+        <Text style={styles.noResultsText}>No products found.</Text>
+      )}
     </View>
   );
 };
@@ -201,6 +205,12 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     padding: 8,
+  },
+  noResultsText: {
+    textAlign: "center",
+    fontSize: 18,
+    color: "gray",
+    marginTop: 20,
   },
 });
 

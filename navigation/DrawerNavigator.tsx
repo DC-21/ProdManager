@@ -1,16 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
-
-const navigationItems = [
-  { label: "Home", route: "HomeStack", icon: "home-outline" },
-  { label: "Electronics", route: "Electronics", icon: "laptop-outline" },
-  { label: "Clothing", route: "Clothing", icon: "shirt-outline" },
-  { label: "Home Appliances", route: "Home Appliances", icon: "tv-outline" },
-  { label: "Books", route: "Books", icon: "book-outline" },
-  { label: "Add Product", route: "Add Product", icon: "add-circle-outline" },
-];
+import { navigationItems } from "../utils/navigation-items";
 
 const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   return (
@@ -18,17 +16,24 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
       <TouchableOpacity
         style={styles.closeButton}
         onPress={() => props.navigation.closeDrawer()}
+        accessibilityLabel="Close menu"
       >
-        <Ionicons name="close" size={30} color=" #14B8A6" />
+        <Ionicons name="close" size={30} color="#14B8A6" />
       </TouchableOpacity>
       <View style={styles.navItems}>
-        {navigationItems.map((item:any, index) => (
+        {navigationItems.map((item, index) => (
           <TouchableOpacity
             key={index}
             style={styles.navItem}
             onPress={() => props.navigation.navigate(item.route)}
+            accessibilityLabel={`Navigate to ${item.label}`}
           >
-            <Ionicons name={item.icon} size={24} color="#000" style={styles.icon} />
+            <Ionicons
+              name={item.icon}
+              size={24}
+              color="#000"
+              style={styles.icon}
+            />
             <Text style={styles.item}>{item.label}</Text>
           </TouchableOpacity>
         ))}
@@ -43,8 +48,6 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 16,
     backgroundColor: "#fff",
-    borderColor: "red",
-    borderWidth: 1,
   },
   closeButton: {
     alignSelf: "flex-start",
@@ -52,7 +55,6 @@ const styles = StyleSheet.create({
   },
   navItems: {
     flex: 1,
-    backgroundColor: " #14B8A6",
   },
   navItem: {
     flexDirection: "row",

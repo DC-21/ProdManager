@@ -21,4 +21,16 @@ export type RootStackParamList = {
   UpdateProduct: { productId: string };
 };
 
+export type IconNames =
+  | "home-outline"
+  | "laptop-outline"
+  | "shirt-outline"
+  | "tv-outline"
+  | "book-outline"
+  | "add-circle-outline";
 
+export type NavigationItem = {
+  label: string;
+  route: string;
+  icon: IconNames;
+};

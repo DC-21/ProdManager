@@ -8,6 +8,7 @@ import UpdateProductScreen from "../screens/UpdateProductScreen";
 import ProductDetailScreen from "../screens/ProductDetailsScreen";
 import DrawerContent from "./DrawerNavigator";
 import Header from "../components/Header";
+import { navigationItems } from "../utils/navigation-items";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -43,28 +44,24 @@ const AppNavigator: React.FC = () => {
         header: () => <Header navigation={navigation} />,
       })}
     >
-      <Drawer.Screen name="HomeStack" component={HomeStackNavigator} />
-      <Drawer.Screen
-        name="Electronics"
-        component={CategoryScreen}
-        initialParams={{ category: "Electronics" }}
-      />
-      <Drawer.Screen
-        name="Clothing"
-        component={CategoryScreen}
-        initialParams={{ category: "Clothing" }}
-      />
-      <Drawer.Screen
-        name="Home Appliances"
-        component={CategoryScreen}
-        initialParams={{ category: "Home Appliances" }}
-      />
-      <Drawer.Screen
-        name="Books"
-        component={CategoryScreen}
-        initialParams={{ category: "Books" }}
-      />
-      <Drawer.Screen name="Add Product" component={AddProductScreen} />
+      {navigationItems.map((item, index) => (
+        <Drawer.Screen
+          key={index}
+          name={item.route}
+          component={
+            item.route === "HomeStack"
+              ? HomeStackNavigator
+              : item.route === "Add Product"
+              ? AddProductScreen
+              : CategoryScreen
+          }
+          initialParams={
+            item.route !== "HomeStack" && item.route !== "Add Product"
+              ? { category: item.label }
+              : undefined
+          }
+        />
+      ))}
     </Drawer.Navigator>
   );
 };
