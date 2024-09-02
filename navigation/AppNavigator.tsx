@@ -11,6 +11,9 @@ import AddProductScreen from "../screens/products/AddProductsScreen";
 import CategoryScreen from "../screens/products/Category";
 import ProductDetailScreen from "../screens/products/ProductDetailsScreen";
 import UpdateProductScreen from "../screens/products/UpdateProductScreen";
+import RegisterScreen from "../screens/auth/Register";
+import update_password from "../screens/auth/update_password";
+import Request_password from "../screens/auth/request_password";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -55,11 +58,18 @@ const AppNavigator: React.FC = () => {
         component={LoginScreen}
         options={{ headerShown: false }}
       />
+      
       <Stack.Screen
         name="GetStarted"
         component={GetStartedScreen}
         options={{ headerShown: false }}
       />
+       <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name="AppDrawer"
         component={AppDrawer}

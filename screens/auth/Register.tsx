@@ -12,29 +12,41 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { LoginCredentials, RootStackParamList } from "../../types/interface";
+import { RegisterCredentials, RootStackParamList } from "../../types/interface";
 import { validateEmail, validatePassword } from "../../utils/validation";
 
-type LoginScreenNavigationProp = StackNavigationProp<
+type RegisterScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Login"
+  "Register"
 >;
 
-interface LoginScreenProps {
-  navigation: LoginScreenNavigationProp;
+interface RegisterScreenProps {
+  navigation: RegisterScreenNavigationProp;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const [credentials, setCredentials] = useState<LoginCredentials>({
+const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
+  const [credentials, setCredentials] = useState<RegisterCredentials>({
+    name: "",
     email: "",
     password: "",
+    phone: "",
   });
 
-  const handleLogin = () => {
-    const { email, password } = credentials;
+  const handleRegister = () => {
+    const { name, email, password, phone } = credentials;
+
+    if (!name) {
+      Alert.alert("Missing Name", "Please enter your name.");
+      return;
+    }
 
     if (!email) {
       Alert.alert("Missing Email", "Please enter your email address.");
+      return;
+    }
+
+    if (!phone) {
+      Alert.alert("Missing Phone", "Please enter your phone number.");
       return;
     }
 
@@ -56,7 +68,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       return;
     }
 
-    navigation.navigate("GetStarted");
+    navigation.navigate("Login");
   };
 
   return (
@@ -69,10 +81,22 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <Text style={styles.headerText}>WELCOME!!</Text>
+          <Text style={styles.headerText}>REGISTER</Text>
         </View>
 
         <View style={styles.card}>
+          <View style={styles.inputContainer}>
+            <Icon name="person" size={20} color="#ccc" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={credentials.name}
+              onChangeText={(text) =>
+                setCredentials({ ...credentials, name: text })
+              }
+              placeholderTextColor="#ccc"
+            />
+          </View>
           <View style={styles.inputContainer}>
             <Icon name="email" size={20} color="#ccc" style={styles.icon} />
             <TextInput
@@ -83,6 +107,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 setCredentials({ ...credentials, email: text })
               }
               keyboardType="email-address"
+              placeholderTextColor="#ccc"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Icon name="phone" size={20} color="#ccc" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone"
+              value={credentials.phone}
+              onChangeText={(text) =>
+                setCredentials({ ...credentials, phone: text })
+              }
+              keyboardType="phone-pad"
               placeholderTextColor="#ccc"
             />
           </View>
@@ -99,16 +136,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               placeholderTextColor="#ccc"
             />
           </View>
-          <TouchableOpacity   style={styles.forgotPasswordContainer}>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+            <Text style={styles.registerButtonText}>Register</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-          <View style={styles.registerContainer}>
-            <Text style={styles.normalText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-              <Text style={styles.registerText}>Register</Text>
+          <View style={styles.loginContainer}>
+            <Text style={styles.normalText}>Already have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={styles.loginText}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -165,16 +199,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     color: "#000",
   },
-  forgotPasswordContainer: {
-    width: "100%",
-    alignItems: "flex-start",
-  },
-  forgotPasswordText: {
-    color: "#708090",
-    marginVertical: 5,
-    fontStyle: "italic",
-  },
-  loginButton: {
+  registerButton: {
     width: "100%",
     backgroundColor: "#eb9e37",
     padding: 15,
@@ -182,11 +207,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
-  loginButtonText: {
+  registerButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
-  registerContainer: {
+  loginContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 15,
@@ -194,10 +219,10 @@ const styles = StyleSheet.create({
   normalText: {
     color: "#708090",
   },
-  registerText: {
+  loginText: {
     color: "#eb9e37",
     fontWeight: "bold",
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

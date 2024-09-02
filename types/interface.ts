@@ -37,7 +37,21 @@ export type NavigationItem = {
   icon: IconNames;
 };
 
+
+
+
+
+export type RegisterCredentials = {
+  phone: string | undefined;
+  email: string;
+  name: string;
+  password: string;
+};
+
+
 export type LoginCredentials = {
   email: string;
   password: string;
 };
+
+
