@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { RootStackParamList } from "../types/interface";
+import { RootStackParamList } from "../../types/interface";
 
 type GetStartedScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -1,16 +1,16 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "../screens/HomeScreen";
-import CategoryScreen from "../screens/Category";
-import AddProductScreen from "../screens/AddProductsScreen";
-import UpdateProductScreen from "../screens/UpdateProductScreen";
-import ProductDetailScreen from "../screens/ProductDetailsScreen";
+import HomeScreen from "../screens/products/HomeScreen";
 import DrawerContent from "./DrawerNavigator";
 import Header from "../components/Header";
 import { navigationItems } from "../utils/navigation-items";
 import LoginScreen from "../screens/auth/Login";
-import GetStartedScreen from "../screens/GetStartedScreen";
+import GetStartedScreen from "../screens/products/GetStartedScreen";
+import AddProductScreen from "../screens/products/AddProductsScreen";
+import CategoryScreen from "../screens/products/Category";
+import ProductDetailScreen from "../screens/products/ProductDetailsScreen";
+import UpdateProductScreen from "../screens/products/UpdateProductScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

@@ -8,12 +8,12 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import {
-  saveProductsToLocalStorage,
-  loadProductsFromLocalStorage,
-} from "../utils/localstorage";
-import { Product } from "../types/interface";
 import { Picker } from "@react-native-picker/picker";
+import { Product } from "../../types/interface";
+import {
+  loadProductsFromLocalStorage,
+  saveProductsToLocalStorage,
+} from "../../utils/localstorage";
 
 const AddProductScreen: React.FC = ({ navigation }: any) => {
   const [title, setTitle] = useState<string>("");

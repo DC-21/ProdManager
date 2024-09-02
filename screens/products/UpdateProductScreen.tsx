@@ -8,12 +8,12 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { Product } from "../../types/interface";
 import {
   loadProductsFromLocalStorage,
   saveProductsToLocalStorage,
-} from "../utils/localstorage";
-import { Product } from "../types/interface";
-import { Picker } from "@react-native-picker/picker";
+} from "../../utils/localstorage";
 
 const UpdateProductScreen: React.FC<any> = ({ route, navigation }: any) => {
   const { productId } = route.params;

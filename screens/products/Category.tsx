@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { loadProductsFromLocalStorage } from "../utils/localstorage";
-import { Product } from "../types/interface";
+import { Product } from "../../types/interface";
+import { loadProductsFromLocalStorage } from "../../utils/localstorage";
 
 const CategoryScreen: React.FC = ({ route, navigation }: any) => {
   const { category } = route.params;

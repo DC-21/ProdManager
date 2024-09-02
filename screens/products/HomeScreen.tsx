@@ -12,13 +12,14 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/Ionicons";
+
+import { Product } from "../../types/interface";
+import productsJson from "../../assets/products.json";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   loadProductsFromLocalStorage,
   saveProductsToLocalStorage,
-} from "../utils/localstorage";
-import { Product } from "../types/interface";
-import productsJson from "../assets/products.json";
-import { useFocusEffect } from "@react-navigation/native";
+} from "../../utils/localstorage";
 
 const HomeScreen: React.FC = ({ navigation }: any) => {
   const [products, setProducts] = useState<Product[]>([]);

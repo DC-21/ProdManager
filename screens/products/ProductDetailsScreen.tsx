@@ -8,8 +8,8 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Product } from "../types/interface";
-import { loadProductsFromLocalStorage } from "../utils/localstorage";
+import { Product } from "../../types/interface";
+import { loadProductsFromLocalStorage } from "../../utils/localstorage";
 
 const ProductDetailScreen: React.FC<any> = ({ route, navigation }) => {
   const { productId } = route.params;
