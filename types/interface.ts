@@ -15,6 +15,10 @@ export interface Product {
 
 export type RootStackParamList = {
   Home: undefined;
+  Login: undefined;
+  Register: undefined;
+  GetStarted: undefined;
+  AppDrawer: undefined;
   ProductDetail: { productId: string };
   UpdateProduct: { productId: string };
 };
@@ -31,4 +35,9 @@ export type NavigationItem = {
   label: string;
   route: string;
   icon: IconNames;
+};
+
+export type LoginCredentials = {
+  email: string;
+  password: string;
 };

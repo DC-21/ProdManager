@@ -9,6 +9,8 @@ import ProductDetailScreen from "../screens/ProductDetailsScreen";
 import DrawerContent from "./DrawerNavigator";
 import Header from "../components/Header";
 import { navigationItems } from "../utils/navigation-items";
+import LoginScreen from "../screens/auth/Login";
+import GetStartedScreen from "../screens/GetStartedScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -31,11 +33,43 @@ const HomeStackNavigator: React.FC = () => {
         component={UpdateProductScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="GetStarted"
+        component={GetStartedScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
 const AppNavigator: React.FC = () => {
+  return (
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="GetStarted"
+        component={GetStartedScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AppDrawer"
+        component={AppDrawer}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const AppDrawer: React.FC = () => {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerContent {...props} />}
